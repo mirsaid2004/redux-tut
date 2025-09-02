@@ -1,27 +1,45 @@
 import { useAppDispatch } from '@/2.app-structure-and-data-flow/app/hooks';
 import { reactToPost, type IPostState } from './postsSlice';
+import type { CSSProperties } from 'react';
 
-function PostReactions({ postId }: { postId: string }) {
+const reactionButtonStyle: CSSProperties = {
+  padding: '8px',
+};
+
+const reactionButtons: Array<{
+  label: string;
+  emoji: string;
+  reaction: keyof IPostState['reactions'];
+}> = [
+  { label: 'Like', emoji: '👍', reaction: 'like' },
+  { label: 'Love', emoji: '❤️', reaction: 'love' },
+  { label: 'Wow', emoji: '😮', reaction: 'wow' },
+];
+
+type PostReactionsProps = {
+  post: IPostState;
+};
+
+function PostReactions({ post }: PostReactionsProps) {
   const dispatch = useAppDispatch();
 
   const handleReaction = (reaction: keyof IPostState['reactions']) => {
-    dispatch(reactToPost({ postId, reaction }));
+    dispatch(reactToPost({ postId: post.id, reaction }));
   };
 
   return (
-    <div>
-      <button onClick={() => handleReaction('like')} title="Like">
-        {' '}
-        👍
-      </button>
-      <button onClick={() => handleReaction('love')} title="Love">
-        {' '}
-        ❤️
-      </button>
-      <button onClick={() => handleReaction('wow')} title="Wow">
-        {' '}
-        😮
-      </button>
+    <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+      {reactionButtons.map(({ label, emoji, reaction }) => (
+        <button
+          key={reaction}
+          onClick={() => handleReaction(reaction)}
+          title={label}
+          style={reactionButtonStyle}
+        >
+          {emoji}
+          {post.reactions[reaction]}
+        </button>
+      ))}
     </div>
   );
 }

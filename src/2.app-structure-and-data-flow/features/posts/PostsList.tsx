@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react';
 import AuthorName from '../users/AuthorName';
 import TimeAgo from './TimeAgo';
 import PostReactions from './PostReactions';
+import PostPopUp from './PostPopUp';
 
 const containerStyle: CSSProperties = {
   display: 'flex',
@@ -19,25 +20,28 @@ const articleStyle: CSSProperties = {
   width: '100%',
 };
 
+const displayBetweenStyle: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginTop: '12px',
+};
+
 function PostsList() {
   const posts = useAppSelector((state) => state.posts);
 
   const renderedPosts = posts.map((post) => (
     <article key={post.id} style={articleStyle}>
-      <h3 style={{ margin: '4px 0' }}>{post.title}</h3>
+      <div style={displayBetweenStyle}>
+        <h3 style={{ margin: '4px 0' }}>{post.title}</h3>
+        <PostPopUp post={post} />
+      </div>
       <p style={{ margin: '6px 0' }}>{post.content}</p>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginTop: '12px',
-        }}
-      >
+      <div style={displayBetweenStyle}>
         <AuthorName authorId={post.authorId} />
         <TimeAgo timestamp={post.publishedAt} />
       </div>
-      <PostReactions postId={post.id} />
+      <PostReactions post={post} />
     </article>
   ));
 

@@ -4,7 +4,7 @@ import {
 } from '@/2.app-structure-and-data-flow/app/hooks';
 import React from 'react';
 import type { CSSProperties } from 'react';
-import { addPost } from './postsSlice';
+import { addPost, editPost } from './postsSlice';
 
 const formStyle: CSSProperties = {
   display: 'flex',
@@ -19,6 +19,7 @@ const formStyle: CSSProperties = {
 
 function PostForm() {
   const users = useAppSelector((store) => store.users);
+  const postEdit = useAppSelector((store) => store.postEdit);
   const dispatch = useAppDispatch();
 
   const usersList = Object.values(users);
@@ -31,7 +32,11 @@ function PostForm() {
     const authorId = formData.get('authorId') as string;
 
     if (title && content && authorId) {
-      dispatch(addPost(title, content, authorId));
+      if (postEdit.post) {
+        dispatch(editPost(postEdit.post.id, title, content, authorId));
+      } else {
+        dispatch(addPost(title, content, authorId));
+      }
       formData.delete('title');
       formData.delete('content');
       formData.delete('authorId');
@@ -46,9 +51,14 @@ function PostForm() {
         type="text"
         placeholder="Title"
         name="title"
+        defaultValue={postEdit.post?.title ?? ''}
         style={{ height: '2rem' }}
       />
-      <select name="authorId" id="">
+      <select
+        name="authorId"
+        id=""
+        defaultValue={postEdit.post?.authorId ?? ''}
+      >
         <option value="">Select Author</option>
         {usersList.map((user) => (
           <option key={user.id} value={user.id}>
@@ -59,6 +69,7 @@ function PostForm() {
       <textarea
         placeholder="Content"
         name="content"
+        defaultValue={postEdit.post?.content ?? ''}
         style={{ height: '4rem' }}
       />
       <button type="submit">Submit</button>
