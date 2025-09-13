@@ -38,6 +38,12 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return data as IPostFromApi[];
 });
 
+export const fetchPostById = async (postId: string) => {
+  const response = await fetch(`${requestUrl}/posts/${postId}`);
+  const data = await response.json();
+  return data as IPostFromApi;
+};
+
 export const addNewPost = createAsyncThunk(
   'posts/addNewPost',
   async (newPost: Omit<IPostFromApi, 'id'>) => {
@@ -56,15 +62,20 @@ export const addNewPost = createAsyncThunk(
 export const updatePost = createAsyncThunk(
   'posts/updatePost',
   async (updatedPost: IPostFromApi) => {
-    const response = await fetch(`${requestUrl}/posts/${updatedPost.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(updatedPost),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    });
-    const data = await response.json();
-    return data as IPostFromApi;
+    try {
+      const response = await fetch(`${requestUrl}/posts/${updatedPost.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(updatedPost),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+      const data = await response.json();
+      return data as IPostFromApi;
+    } catch (err) {
+      console.error('Failed to update post:', err);
+      return updatedPost;
+    }
   },
 );
 
@@ -222,6 +233,8 @@ const postsSlice = createSlice({
 });
 
 export const selectAllPosts = (state: RootState) => state.postsData.posts;
+export const selectPostById = (state: RootState, postId: string) =>
+  state.postsData.posts.find((post) => post.id === postId);
 export const getPostsStatus = (state: RootState) => state.postsData.status;
 export const getPostsError = (state: RootState) => state.postsData.error;
 

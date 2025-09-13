@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/2.app-structure-and-data-flow/app/hooks';
-import { reactToPost, type IPost } from './postsSlice';
+import { reactToPost, type IPost } from '../features/posts/postsSlice';
 import type { CSSProperties } from 'react';
 
 const reactionButtonStyle: CSSProperties = {

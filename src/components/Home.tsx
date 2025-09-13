@@ -1,8 +1,9 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 // image imports
 import ReduxToolkitIntro from '@/assets/redux-toolkit-intro.png';
 import AppStructureAndDataFlow from '@/assets/app-structure-and-data-flow.png';
 import AsyncLogicAndThunks from '@/assets/async-logic-and-thunks.png';
+import BlogProject from '@/assets/blog-page.png';
 
 const lesson_pages = [
   {
@@ -28,6 +29,13 @@ const lesson_pages = [
       'Learn how to handle asynchronous logic in Redux using Thunks.',
     img: AsyncLogicAndThunks,
     alt: 'Async Logic and Thunks',
+  },
+  {
+    path: '/lesson/blog-project',
+    title: '4. Blog Project',
+    description: 'Build a blog application using Redux Toolkit.',
+    img: BlogProject,
+    alt: 'Blog Project',
   },
 ];
 

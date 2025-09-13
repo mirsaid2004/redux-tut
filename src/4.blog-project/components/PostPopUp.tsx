@@ -1,7 +1,7 @@
 import { useAppDispatch } from '@/2.app-structure-and-data-flow/app/hooks';
 import { useState, useRef, useEffect } from 'react';
-import { startEditing } from './postEditSlice';
-import { deletePostFromApi, type IPost } from './postsSlice';
+import { deletePostFromApi, type IPost } from '../features/posts/postsSlice';
+import { Link, useNavigate } from 'react-router';
 
 type PostPopUpProps = {
   post: IPost;
@@ -11,6 +11,7 @@ function PostPopUp({ post }: PostPopUpProps) {
   const [openPopUp, setOpenPopUp] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -57,17 +58,13 @@ function PostPopUp({ post }: PostPopUpProps) {
             gap: '8px',
           }}
         >
-          <button
-            onClick={() => {
-              dispatch(startEditing(post));
-            }}
-            style={{ marginRight: '8px', width: '100%' }}
-          >
-            Edit
-          </button>
+          <Link to={'/lesson/blog-project/edit-post/' + post.id}>
+            <button style={{ marginRight: '8px', width: '100%' }}>Edit</button>
+          </Link>
           <button
             onClick={() => {
               dispatch(deletePostFromApi(post.id));
+              navigate('/lesson/blog-project');
             }}
             style={{ color: 'red' }}
           >
