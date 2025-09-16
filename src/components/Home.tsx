@@ -56,6 +56,14 @@ const lesson_pages = [
     img: RTKQueryIntro,
     alt: 'RTK Query Intro',
   },
+  {
+    path: '/lesson/advanced-redux-and-rtk-query',
+    title: '7. Advanced Redux and RTK Query',
+    description:
+      'Dive deeper into Redux and explore RTK Query for efficient data fetching.',
+    img: PerformanceOptimizations,
+    alt: 'Advanced Redux and RTK Query',
+  },
 ];
 
 const isNum = (value: number | null): value is number => {

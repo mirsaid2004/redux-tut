@@ -19,6 +19,14 @@ import PerformancePost from '@/5.performance-optimizations/pages/Post.page';
 import PerformanceUser from '@/5.performance-optimizations/pages/User.page';
 // 6.rtk-query-intro imports
 import RtkQueryIntro from '@/6.rtk-query-intro';
+// 7.advanced-redux&rtk-query imports
+import AdvancedReduxAndRTKQuery from '@/7.advanced-redux&rtk-query';
+import AdvancedReduxAndRTKQueryPostsList from '@/7.advanced-redux&rtk-query/pages/Posts.page';
+import AdvancedReduxAndRTKQueryUsersList from '@/7.advanced-redux&rtk-query/pages/UsersList.page';
+import AdvancedReduxAndRTKQueryPostCreate from '@/7.advanced-redux&rtk-query/pages/PostCreate.page';
+import AdvancedReduxAndRTKQueryPostEdit from '@/7.advanced-redux&rtk-query/pages/PostEdit.page';
+import AdvancedReduxAndRTKQueryPost from '@/7.advanced-redux&rtk-query/pages/Post.page';
+import AdvancedReduxAndRTKQueryUser from '@/7.advanced-redux&rtk-query/pages/User.page';
 // Lesson wrapper
 import Lesson from './components/Lesson';
 
@@ -56,6 +64,29 @@ function App() {
           <Route path="post/:postId" element={<PerformancePost />} />
         </Route>
         <Route path="rtk-query-intro" element={<RtkQueryIntro />} />
+        <Route
+          path="advanced-redux-and-rtk-query"
+          element={<AdvancedReduxAndRTKQuery />}
+        >
+          <Route index element={<AdvancedReduxAndRTKQueryPostsList />} />
+          <Route path="users" element={<AdvancedReduxAndRTKQueryUsersList />} />
+          <Route
+            path="users/:userId"
+            element={<AdvancedReduxAndRTKQueryUser />}
+          />
+          <Route
+            path="create-post"
+            element={<AdvancedReduxAndRTKQueryPostCreate />}
+          />
+          <Route
+            path="edit-post/:postId"
+            element={<AdvancedReduxAndRTKQueryPostEdit />}
+          />
+          <Route
+            path="post/:postId"
+            element={<AdvancedReduxAndRTKQueryPost />}
+          />
+        </Route>
       </Route>
       <Route path="*" element={<div>Not Found</div>} />
     </Routes>
