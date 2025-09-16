@@ -1,4 +1,4 @@
-import type { RootState } from '@/3.async-logic-and-thunks/app/store';
+import type { RootState } from '@/4.blog-project/app/store';
 import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
