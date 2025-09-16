@@ -4,6 +4,7 @@ import ReduxToolkitIntro from '@/assets/redux-toolkit-intro.png';
 import AppStructureAndDataFlow from '@/assets/app-structure-and-data-flow.png';
 import AsyncLogicAndThunks from '@/assets/async-logic-and-thunks.png';
 import BlogProject from '@/assets/blog-page.png';
+import PerformanceOptimizations from '@/assets/performance-optimizations.png';
 
 const lesson_pages = [
   {
@@ -36,6 +37,14 @@ const lesson_pages = [
     description: 'Build a blog application using Redux Toolkit.',
     img: BlogProject,
     alt: 'Blog Project',
+  },
+  {
+    path: '/lesson/performance-optimizations',
+    title: '5. Performance Optimizations',
+    description:
+      'Learn how to optimize the performance of your Redux application.',
+    img: PerformanceOptimizations,
+    alt: 'Performance Optimizations',
   },
 ];
 
