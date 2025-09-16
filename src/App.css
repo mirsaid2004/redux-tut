@@ -34,7 +34,8 @@
     transform 0.3s;
 }
 
-.lesson_link_style:hover {
+.focused:hover,
+.focused:focus {
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.15),
     0 1.5px 6px rgba(0, 0, 0, 0.1);
@@ -42,7 +43,8 @@
   border-color: #b3b3b3;
 }
 
-.lesson_link_style:hover > img {
+.focused:hover,
+.focused:focus > img {
   filter: brightness(0.8) blur(1.5px);
   transform: scale(1.06);
   transition:

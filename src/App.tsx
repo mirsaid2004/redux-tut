@@ -17,6 +17,8 @@ import PerformancePostCreate from '@/5.performance-optimizations/pages/PostCreat
 import PerformancePostEdit from '@/5.performance-optimizations/pages/PostEdit.page';
 import PerformancePost from '@/5.performance-optimizations/pages/Post.page';
 import PerformanceUser from '@/5.performance-optimizations/pages/User.page';
+// 6.rtk-query-intro imports
+import RtkQueryIntro from '@/6.rtk-query-intro';
 // Lesson wrapper
 import Lesson from './components/Lesson';
 
@@ -53,6 +55,7 @@ function App() {
           <Route path="edit-post/:postId" element={<PerformancePostEdit />} />
           <Route path="post/:postId" element={<PerformancePost />} />
         </Route>
+        <Route path="rtk-query-intro" element={<RtkQueryIntro />} />
       </Route>
       <Route path="*" element={<div>Not Found</div>} />
     </Routes>
