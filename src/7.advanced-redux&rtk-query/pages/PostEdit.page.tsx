@@ -1,17 +1,20 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { selectPostById, updatePost } from '../features/posts/postsSlice';
+import {
+  selectPostById,
+  useUpdatePostMutation,
+} from '../features/posts/postsSlice';
 import PostForm, { type FormRequestStatus } from '../components/PostForm';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useAppSelector } from '../app/hooks';
 
 function PostEditPage() {
+  const [updatePost] = useUpdatePostMutation();
   const params = useParams();
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const postDetails = useAppSelector((state) =>
     selectPostById(state, params.postId!),
   );
 
-  const handelSubmitForm = (
+  const handelSubmitForm = async (
     e: React.FormEvent<HTMLFormElement>,
     setFormStatus: (requestStatus: FormRequestStatus) => void,
   ) => {
@@ -25,14 +28,12 @@ function PostEditPage() {
       const authorId = formData.get('authorId') as string;
 
       if (title && content && authorId && postDetails) {
-        dispatch(
-          updatePost({
-            id: +postDetails.id,
-            title,
-            body: content,
-            userId: +authorId,
-          }),
-        ).unwrap();
+        await updatePost({
+          id: postDetails.id,
+          title,
+          content,
+          authorId,
+        }).unwrap();
 
         formData.delete('title');
         formData.delete('content');

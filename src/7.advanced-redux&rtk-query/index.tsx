@@ -3,10 +3,10 @@ import Header from './components/Header';
 import { Outlet } from 'react-router-dom';
 import { store } from './app/store';
 import { fetchUsers } from './features/users/usersSlice';
-import { fetchPosts } from './features/posts/postsSlice';
+import { extendedApiSlice } from './features/posts/postsSlice';
 
 store.dispatch(fetchUsers());
-store.dispatch(fetchPosts());
+store.dispatch(extendedApiSlice.endpoints.getPosts.initiate());
 
 function Index() {
   return (

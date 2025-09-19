@@ -1,5 +1,7 @@
-import { useAppDispatch } from '@/7.advanced-redux&rtk-query/app/hooks';
-import { reactToPost, type IPost } from '../features/posts/postsSlice';
+import {
+  useReactToPostMutation,
+  type IPost,
+} from '../features/posts/postsSlice';
 import type { CSSProperties } from 'react';
 
 const reactionButtonStyle: CSSProperties = {
@@ -21,10 +23,9 @@ type PostReactionsProps = {
 };
 
 function PostReactions({ post }: PostReactionsProps) {
-  const dispatch = useAppDispatch();
-
+  const [reactToPost] = useReactToPostMutation();
   const handleReaction = (reaction: keyof IPost['reactions']) => {
-    dispatch(reactToPost({ postId: post.id, reaction }));
+    reactToPost({ postId: post.id, reaction });
   };
 
   return (

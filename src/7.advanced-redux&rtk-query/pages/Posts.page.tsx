@@ -3,8 +3,7 @@ import AuthorName from '../components/AuthorName';
 import TimeAgo from '../components/TimeAgo';
 import PostReactions from '../components/PostReactions';
 import {
-  getPostsError,
-  getPostsStatus,
+  useGetPostsQuery,
   selectPostById,
   selectPostIds,
 } from '../features/posts/postsSlice';
@@ -47,18 +46,17 @@ const postContentStyle: CSSProperties = {
 
 function PostsList() {
   const orderedPostIds = useAppSelector(selectPostIds);
-  const postsStatus = useAppSelector(getPostsStatus);
-  const postsError = useAppSelector(getPostsError);
+  const { isLoading, isError, isSuccess, error } = useGetPostsQuery();
 
   let content;
-  if (postsStatus === 'loading') {
+  if (isLoading) {
     content = <p>Loading...</p>;
-  } else if (postsStatus === 'succeeded') {
+  } else if (isSuccess) {
     content = orderedPostIds?.map((post) => (
       <PostItem key={post} postId={post} />
     ));
-  } else if (postsStatus === 'failed') {
-    content = <p>{postsError}</p>;
+  } else if (isError) {
+    content = <p>{JSON.stringify(error)}</p>;
   }
 
   return (

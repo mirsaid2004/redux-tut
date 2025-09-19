@@ -1,6 +1,8 @@
-import { useAppDispatch } from '@/7.advanced-redux&rtk-query/app/hooks';
 import { useState, useRef, useEffect } from 'react';
-import { deletePostFromApi, type IPost } from '../features/posts/postsSlice';
+import {
+  useDeletePostFromApiMutation,
+  type IPost,
+} from '../features/posts/postsSlice';
 import { Link, useNavigate } from 'react-router';
 
 type PostPopUpProps = {
@@ -10,7 +12,7 @@ type PostPopUpProps = {
 function PostPopUp({ post }: PostPopUpProps) {
   const [openPopUp, setOpenPopUp] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
-  const dispatch = useAppDispatch();
+  const [deletePostFromApi] = useDeletePostFromApiMutation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +31,15 @@ function PostPopUp({ post }: PostPopUpProps) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [openPopUp]);
+
+  const handleDeletePost = async () => {
+    try {
+      await deletePostFromApi(post.id).unwrap();
+      navigate('/lesson/advanced-redux-and-rtk-query');
+    } catch (error) {
+      console.error('Failed to delete post:', error);
+    }
+  };
 
   return (
     <div style={{ display: 'inline-block', position: 'relative' }}>
@@ -63,13 +74,7 @@ function PostPopUp({ post }: PostPopUpProps) {
           >
             <button style={{ marginRight: '8px', width: '100%' }}>Edit</button>
           </Link>
-          <button
-            onClick={() => {
-              dispatch(deletePostFromApi(post.id));
-              navigate('/lesson/advanced-redux-and-rtk-query');
-            }}
-            style={{ color: 'red' }}
-          >
+          <button onClick={handleDeletePost} style={{ color: 'red' }}>
             Delete
           </button>
         </div>

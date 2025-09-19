@@ -1,13 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../app/hooks';
 import PostForm, { type FormRequestStatus } from '../components/PostForm';
-import { addNewPost } from '../features/posts/postsSlice';
+import { useAddNewPostMutation } from '../features/posts/postsSlice';
 
 function PostCreatePage() {
-  const dispatch = useAppDispatch();
+  const [addNewPost] = useAddNewPostMutation();
   const navigate = useNavigate();
 
-  const handelSubmitForm = (
+  const handelSubmitForm = async (
     e: React.FormEvent<HTMLFormElement>,
     setFormStatus: (requestStatus: FormRequestStatus) => void,
   ) => {
@@ -21,9 +20,11 @@ function PostCreatePage() {
       const authorId = formData.get('authorId') as string;
 
       if (title && content && authorId) {
-        dispatch(
-          addNewPost({ title, body: content, userId: +authorId }),
-        ).unwrap();
+        await addNewPost({
+          title,
+          content,
+          authorId,
+        }).unwrap();
 
         formData.delete('title');
         formData.delete('content');

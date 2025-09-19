@@ -1,16 +1,14 @@
+import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Intro from '@/1.redux-toolkit-intro';
 import AppStructureAndDataFlow from '@/2.app-structure-and-data-flow';
-import AsyncLogicAndThunks from '@/3.async-logic-and-thunks';
 // 4.blog-project imports
-import BlogProject from '@/4.blog-project';
 import PostsList from '@/4.blog-project/pages/Posts.page';
 import PostCreate from '@/4.blog-project/pages/PostCreate.page';
 import PostEdit from '@/4.blog-project/pages/PostEdit.page';
 import Post from '@/4.blog-project/pages/Post.page';
 // 5.performance-optimizations imports
-import PerformanceOptimizations from '@/5.performance-optimizations';
 import PerformancePostsList from '@/5.performance-optimizations/pages/Posts.page';
 import PerformanceUsersList from '@/5.performance-optimizations/pages/UsersList.page';
 import PerformancePostCreate from '@/5.performance-optimizations/pages/PostCreate.page';
@@ -20,7 +18,6 @@ import PerformanceUser from '@/5.performance-optimizations/pages/User.page';
 // 6.rtk-query-intro imports
 import RtkQueryIntro from '@/6.rtk-query-intro';
 // 7.advanced-redux&rtk-query imports
-import AdvancedReduxAndRTKQuery from '@/7.advanced-redux&rtk-query';
 import AdvancedReduxAndRTKQueryPostsList from '@/7.advanced-redux&rtk-query/pages/Posts.page';
 import AdvancedReduxAndRTKQueryUsersList from '@/7.advanced-redux&rtk-query/pages/UsersList.page';
 import AdvancedReduxAndRTKQueryPostCreate from '@/7.advanced-redux&rtk-query/pages/PostCreate.page';
@@ -29,8 +26,16 @@ import AdvancedReduxAndRTKQueryPost from '@/7.advanced-redux&rtk-query/pages/Pos
 import AdvancedReduxAndRTKQueryUser from '@/7.advanced-redux&rtk-query/pages/User.page';
 // Lesson wrapper
 import Lesson from './components/Lesson';
-
 import './App.css';
+
+const AsyncLogicAndThunks = lazy(() => import('@/3.async-logic-and-thunks'));
+const BlogProject = lazy(() => import('@/4.blog-project'));
+const PerformanceOptimizations = lazy(
+  () => import('@/5.performance-optimizations'),
+);
+const AdvancedReduxAndRTKQuery = lazy(
+  () => import('@/7.advanced-redux&rtk-query'),
+);
 
 function App() {
   return (
@@ -44,7 +49,11 @@ function App() {
         />
         <Route
           path="async-logic-and-thunks"
-          element={<AsyncLogicAndThunks />}
+          element={
+            <Suspense>
+              <AsyncLogicAndThunks />
+            </Suspense>
+          }
         />
         <Route path="blog-project" element={<BlogProject />}>
           <Route index element={<PostsList />} />
