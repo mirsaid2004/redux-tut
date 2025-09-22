@@ -59,10 +59,10 @@ function PostPage() {
         <h3 style={postTitleStyle}>{post.title}</h3>
         <PostPopUp post={post} />
       </div>
-      <p style={postContentStyle}>{post.content}</p>
+      <p style={postContentStyle}>{post.body}</p>
       <div style={displayBetweenStyle}>
-        <AuthorName authorId={post.authorId} />
-        <TimeAgo timestamp={post.publishedAt} />
+        <AuthorName authorId={post.userId} />
+        <TimeAgo timestamp={post.date} />
       </div>
       <PostReactions post={post} />
     </article>

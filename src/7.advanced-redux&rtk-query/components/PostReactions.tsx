@@ -25,7 +25,13 @@ type PostReactionsProps = {
 function PostReactions({ post }: PostReactionsProps) {
   const [reactToPost] = useReactToPostMutation();
   const handleReaction = (reaction: keyof IPost['reactions']) => {
-    reactToPost({ postId: post.id, reaction });
+    reactToPost({
+      postId: post.id,
+      reactions: {
+        ...post.reactions,
+        [reaction]: post.reactions[reaction] + 1,
+      },
+    });
   };
 
   return (
@@ -36,6 +42,7 @@ function PostReactions({ post }: PostReactionsProps) {
           onClick={() => handleReaction(reaction)}
           title={label}
           style={reactionButtonStyle}
+          type="button"
         >
           {emoji}
           {post.reactions[reaction]}

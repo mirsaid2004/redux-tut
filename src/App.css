@@ -40,13 +40,15 @@
     0 8px 24px rgba(0, 0, 0, 0.15),
     0 1.5px 6px rgba(0, 0, 0, 0.1);
   transform: scale(1.04) translateY(-4px);
-  border-color: #b3b3b3;
+  border: 2.5px solid #fff;
+  overflow: hidden;
 }
 
-.focused:hover,
+.focused:hover > img,
 .focused:focus > img {
   filter: brightness(0.8) blur(1.5px);
   transform: scale(1.06);
+
   transition:
     filter 0.3s,
     transform 0.3s;

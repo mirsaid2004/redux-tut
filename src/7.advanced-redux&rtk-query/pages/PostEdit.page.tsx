@@ -24,15 +24,15 @@ function PostEditPage() {
 
       const formData = new FormData(e.currentTarget);
       const title = formData.get('title') as string;
-      const content = formData.get('content') as string;
-      const authorId = formData.get('authorId') as string;
+      const body = formData.get('content') as string;
+      const userId = formData.get('authorId') as string;
 
-      if (title && content && authorId && postDetails) {
+      if (title && body && userId && postDetails) {
         await updatePost({
           id: postDetails.id,
           title,
-          content,
-          authorId,
+          body,
+          userId,
         }).unwrap();
 
         formData.delete('title');

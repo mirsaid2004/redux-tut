@@ -1,12 +1,12 @@
 import { useAppSelector } from '@/7.advanced-redux&rtk-query/app/hooks';
+import { selectUserById } from '../features/users/usersSlice';
 
 type AuthorNameProps = {
   authorId?: string;
 };
 
 function AuthorName({ authorId }: AuthorNameProps) {
-  const users = useAppSelector((state) => state.users);
-  const author = authorId && users[authorId];
+  const author = useAppSelector((state) => selectUserById(state, authorId!));
 
   return <i>{author ? author.name : 'Unknown Author'}</i>;
 }

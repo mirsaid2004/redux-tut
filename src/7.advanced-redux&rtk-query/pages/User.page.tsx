@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router';
 import { useAppSelector } from '../app/hooks';
 import { filterPostsByUserId } from '../features/posts/postsSlice';
 import type { CSSProperties } from 'react';
+import { selectUserById } from '../features/users/usersSlice';
 
 const userPostsWrapperStyle: CSSProperties = {
   display: 'flex',
@@ -13,7 +14,7 @@ const userPostsWrapperStyle: CSSProperties = {
 
 function User() {
   const params = useParams();
-  const user = useAppSelector((state) => state.users[params.userId!]);
+  const user = useAppSelector((state) => selectUserById(state, params.userId!));
   const userPosts = useAppSelector((state) =>
     filterPostsByUserId(state, params.userId!),
   );

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { useAppSelector } from '@/7.advanced-redux&rtk-query/app/hooks';
+import { selectAllUsers } from '../features/users/usersSlice';
 
 const formStyle: CSSProperties = {
   display: 'flex',
@@ -16,8 +17,8 @@ const formStyle: CSSProperties = {
 type PostFormProps = {
   defaultValues?: {
     title?: string;
-    content?: string;
-    authorId?: string;
+    body?: string;
+    userId?: string;
   };
   formTitle: string;
   handleSubmitForm: (
@@ -35,7 +36,10 @@ function PostForm({
 }: PostFormProps) {
   const [formRequestStatus, setFormRequestStatus] =
     useState<FormRequestStatus>('idle');
-  const users = useAppSelector((store) => store.users);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const authorRef = useRef<HTMLSelectElement>(null);
+  const users = useAppSelector(selectAllUsers);
   const usersList = Object.values(users);
 
   const shouldDisableForm = formRequestStatus === 'loading';
@@ -43,6 +47,20 @@ function PostForm({
   const changeFormStatus = (status: FormRequestStatus) => {
     setFormRequestStatus(status);
   };
+
+  console.log({ defaultValues });
+
+  useEffect(() => {
+    if (titleRef.current && defaultValues?.title) {
+      titleRef.current.value = defaultValues.title;
+    }
+    if (contentRef.current && defaultValues?.body) {
+      contentRef.current.value = defaultValues.body;
+    }
+    if (authorRef.current && defaultValues?.userId) {
+      authorRef.current.value = defaultValues.userId;
+    }
+  }, [defaultValues]);
 
   return (
     <form
@@ -58,8 +76,8 @@ function PostForm({
         style={{ height: '2rem' }}
       />
       {usersList.length ? (
-        <select name="authorId" defaultValue={defaultValues?.authorId ?? '0'}>
-          <option value="0">Select Author</option>
+        <select name="authorId" defaultValue={defaultValues?.userId ?? '0'}>
+          <option value="0">Select User</option>
           {usersList.map((user) => (
             <option key={user.id} value={user.id.toString()}>
               {user.name}
@@ -72,7 +90,7 @@ function PostForm({
       <textarea
         placeholder="Content"
         name="content"
-        defaultValue={defaultValues?.content ?? ''}
+        defaultValue={defaultValues?.body ?? ''}
         style={{ height: '4rem' }}
       />
       <button type="submit" disabled={shouldDisableForm}>

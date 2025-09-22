@@ -16,14 +16,14 @@ function PostCreatePage() {
 
       const formData = new FormData(e.currentTarget);
       const title = formData.get('title') as string;
-      const content = formData.get('content') as string;
-      const authorId = formData.get('authorId') as string;
+      const body = formData.get('content') as string;
+      const userId = formData.get('authorId') as string;
 
-      if (title && content && authorId) {
+      if (title && body && userId) {
         await addNewPost({
           title,
-          content,
-          authorId,
+          body,
+          userId,
         }).unwrap();
 
         formData.delete('title');

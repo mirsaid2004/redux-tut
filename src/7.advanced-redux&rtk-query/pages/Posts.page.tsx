@@ -1,4 +1,4 @@
-import { type CSSProperties } from 'react';
+import { memo, useEffect, useRef, type CSSProperties } from 'react';
 import AuthorName from '../components/AuthorName';
 import TimeAgo from '../components/TimeAgo';
 import PostReactions from '../components/PostReactions';
@@ -45,8 +45,56 @@ const postContentStyle: CSSProperties = {
 };
 
 function PostsList() {
+  const { isLoading, isError, isSuccess, error } = useGetPostsQuery(undefined, {
+    selectFromResult(state) {
+      return {
+        isLoading: state.isLoading,
+        isError: state.isError,
+        isSuccess: state.isSuccess,
+        error: state.error,
+      };
+    },
+  });
   const orderedPostIds = useAppSelector(selectPostIds);
-  const { isLoading, isError, isSuccess, error } = useGetPostsQuery();
+
+  // Debug: track PostsList re-renders
+  const renderCount = useRef(0);
+  const prevPostIds = useRef(orderedPostIds);
+  const prevQueryState = useRef({ isLoading });
+  console.log({ isLoading });
+
+  renderCount.current++;
+
+  useEffect(() => {
+    console.log(`🔄 PostsList re-render #${renderCount.current}`);
+
+    if (prevPostIds.current !== orderedPostIds) {
+      console.log('❌ orderedPostIds reference changed!');
+      console.log('Previous:', prevPostIds.current);
+      console.log('Current:', orderedPostIds);
+      console.log(
+        'Arrays equal?',
+        JSON.stringify(prevPostIds.current) === JSON.stringify(orderedPostIds),
+      );
+    } else {
+      console.log('✅ orderedPostIds reference is the same');
+    }
+
+    const currentQueryState = { isLoading };
+    if (
+      JSON.stringify(prevQueryState.current) !==
+      JSON.stringify(currentQueryState)
+    ) {
+      console.log('❌ Query state changed!');
+      console.log('Previous query state:', prevQueryState.current);
+      console.log('Current query state:', currentQueryState);
+    } else {
+      console.log('✅ Query state is the same');
+    }
+
+    prevPostIds.current = orderedPostIds;
+    prevQueryState.current = currentQueryState;
+  });
 
   let content;
   if (isLoading) {
@@ -69,6 +117,7 @@ function PostsList() {
 
 const PostItem = ({ postId }: { postId: string }) => {
   const post = useAppSelector((state) => selectPostById(state, postId));
+
   if (!post) return null;
 
   return (
@@ -76,15 +125,15 @@ const PostItem = ({ postId }: { postId: string }) => {
       <div style={displayBetweenStyle}>
         <h3 style={postTitleStyle}>{post.title}</h3>
       </div>
-      <p style={postContentStyle}>{post.content}</p>
+      <p style={postContentStyle}>{post.body}</p>
       <Link to={`post/${post.id}`}>View Post</Link>
       <div style={displayBetweenStyle}>
-        <AuthorName authorId={post.authorId} />
-        <TimeAgo timestamp={post.publishedAt} />
+        <AuthorName authorId={post.userId} />
+        <TimeAgo timestamp={post.date} />
       </div>
       <PostReactions post={post} />
     </article>
   );
 };
 
-export default PostsList;
+export default memo(PostsList);

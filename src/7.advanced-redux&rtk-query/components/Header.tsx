@@ -1,6 +1,5 @@
 import type { CSSProperties } from 'react';
 import { NavLink } from 'react-router';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
 
 const navList = [
   { title: 'Posts', path: '/lesson/advanced-redux-and-rtk-query' },
@@ -30,8 +29,6 @@ const navWrapperStyle: CSSProperties = {
 };
 
 function Header() {
-  const count = useAppSelector((state) => state.postsData.count);
-  const dispatch = useAppDispatch();
   return (
     <div style={headerStyle}>
       <h1 style={{ margin: 10 }}>Blog Project</h1>
@@ -47,11 +44,6 @@ function Header() {
             </NavLink>
           </li>
         ))}
-        <li>
-          <button onClick={() => dispatch({ type: 'posts/increaseCount' })}>
-            {count}
-          </button>
-        </li>
       </ul>
     </div>
   );
